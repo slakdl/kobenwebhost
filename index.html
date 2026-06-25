@@ -41,6 +41,16 @@
             opacity: 0;
         }
     }
+
+    .portfolio-link {
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .portfolio-link:hover {
+        text-decoration: underline;
+    }
 </style>
 </head>
 
@@ -49,21 +59,31 @@
 <div id="typewriter"></div>
 
 <script>
-    const text = `Studio KOBEN
-Sindshvilevej 9a
-2000 Frederiksberg
-
-Portfolio on request`;
+    const before = `Studio KOBEN\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
+    const linkText = `Portfolio on request`;
 
     const element = document.getElementById('typewriter');
 
     let i = 0;
+    let linkInserted = false;
 
     function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
+        const full = before + linkText;
+        if (i < full.length) {
+            if (!linkInserted && i >= before.length) {
+                const a = document.createElement('a');
+                a.href = 'mailto:hello@koben.studio';
+                a.className = 'portfolio-link';
+                element.appendChild(a);
+                linkInserted = true;
+            }
+            if (linkInserted) {
+                element.querySelector('a').textContent += full.charAt(i);
+            } else {
+                element.textContent += full.charAt(i);
+            }
             i++;
-            setTimeout(type, 12); // speed
+            setTimeout(type, 12);
         }
     }
 
