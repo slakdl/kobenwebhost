@@ -4,69 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Studio KOBEN</title>
-
+<link rel="icon" type="image/png" href="favicon.png">
 <style>
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-
     body {
         background: #000;
         color: #fff;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 16px;
         line-height: 1.25;
-
         display: flex;
         justify-content: center;
         align-items: center;
-
         min-height: 100vh;
         text-align: center;
     }
-
     #typewriter {
         white-space: pre-line;
     }
-
     .cursor {
         display: inline-block;
         animation: blink 0.8s infinite;
     }
-
     @keyframes blink {
         50% {
             opacity: 0;
         }
     }
-
     .portfolio-link {
         color: #fff;
         text-decoration: none;
         cursor: pointer;
     }
-
     .portfolio-link:hover {
         text-decoration: underline;
     }
 </style>
 </head>
-
 <body>
-
 <div id="typewriter"></div>
-
 <script>
     const before = `Studio KOBEN\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
     const linkText = `Portfolio on request`;
-
     const element = document.getElementById('typewriter');
-
     let i = 0;
     let linkInserted = false;
-
     function type() {
         const full = before + linkText;
         if (i < full.length) {
@@ -86,9 +72,7 @@
             setTimeout(type, 12);
         }
     }
-
     type();
 </script>
-
 </body>
 </html>
