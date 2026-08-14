@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Studio KOBEN</title>
-<link rel="icon" type="image/png" href="favicon.png">
+<link rel="icon" type="image/png" href="assets/favicon.png">
 <style>
     * {
         margin: 0;
@@ -25,6 +25,10 @@
     }
     #typewriter {
         white-space: pre-line;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        text-align: left;
     }
     .cursor {
         display: inline-block;
@@ -43,12 +47,33 @@
     .portfolio-link:hover {
         text-decoration: underline;
     }
+    .about-link {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .about-link:hover {
+        text-decoration: underline;
+    }
+    .logo {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        pointer-events: none;
+    }
 </style>
 </head>
 <body>
+<a href="about/" class="about-link">about</a>
+<img src="assets/KOBEN_LOGO_WHITE.svg" alt="KOBEN" class="logo">
 <div id="typewriter"></div>
 <script>
-    const before = `Studio KOBEN\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
+    const before = `Studio KOBEN\nWhere dreams come true\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
     const linkText = `Portfolio on request`;
     const element = document.getElementById('typewriter');
     let i = 0;
