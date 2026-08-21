@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fàbro — Studio KOBEN</title>
+<link rel="icon" type="image/png" href="../assets/favicon.png">
+<style>
+    @font-face {
+        font-family: 'G2Hyper-Visible';
+        src: url('../assets/G2%20HYPER/G2Hyper-Visible.otf') format('opentype');
+    }
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.5;
+    }
+    a {
+        color: var(--fg);
+    }
+    .top-link {
+        position: fixed;
+        top: 20px;
+        color: var(--fg);
+        text-decoration: none;
+        font-family: 'G2Hyper-Visible', Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        cursor: pointer;
+        z-index: 10;
+    }
+    .top-link:hover {
+        text-decoration: underline;
+    }
+    .top-link.home {
+        left: 20px;
+    }
+    .top-link.info {
+        right: 20px;
+    }
+    main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 40px;
+    }
+    .intro {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 24px;
+        padding-top: 80px;
+        padding-bottom: 80px;
+    }
+    .eyebrow {
+        font-family: 'G2Hyper-Visible', Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        opacity: 0.7;
+    }
+    h1 {
+        font-family: 'G2Hyper-Visible', Arial, Helvetica, sans-serif;
+        font-weight: 400;
+        font-size: clamp(64px, 12vw, 160px);
+        line-height: 0.95;
+    }
+    .subtitle {
+        font-size: clamp(16px, 2vw, 20px);
+        max-width: 40ch;
+    }
+    .intro p {
+        font-size: clamp(15px, 1.4vw, 18px);
+        max-width: 60ch;
+        opacity: 0.9;
+    }
+    .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 40px;
+        font-family: 'G2Hyper-Visible', Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        opacity: 0.7;
+        margin-top: 16px;
+    }
+    section {
+        padding: clamp(80px, 14vh, 180px) 0;
+    }
+    section h2 {
+        font-family: 'G2Hyper-Visible', Arial, Helvetica, sans-serif;
+        font-weight: 400;
+        text-transform: uppercase;
+        font-size: 12px;
+        letter-spacing: 0.04em;
+        opacity: 0.7;
+        margin-bottom: 20px;
+    }
+    section p {
+        font-size: clamp(15px, 1.4vw, 18px);
+        max-width: 60ch;
+        margin-bottom: clamp(48px, 8vh, 100px);
+    }
+    figure {
+        margin: 0;
+    }
+    figure img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    figcaption {
+        font-size: 12px;
+        text-transform: uppercase;
+        opacity: 0.6;
+        margin-top: 12px;
+    }
+    .stack > * + * {
+        margin-top: clamp(48px, 8vh, 100px);
+    }
+    .pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(24px, 4vw, 60px);
+    }
+    .bleed {
+        width: 100vw;
+        position: relative;
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+    }
+    .bleed img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    footer {
+        padding: clamp(80px, 14vh, 180px) 0 100px;
+        font-family: 'G2Hyper-Visible', Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+    footer a {
+        text-decoration: none;
+    }
+    footer a:hover {
+        text-decoration: underline;
+    }
+    @media (max-width: 720px) {
+        .pair {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+</head>
+<body>
+<script src="../assets/colorbank.js"></script>
+<a href="../" class="top-link home">Studio Koben</a>
+<a href="../info/" class="top-link info">Info</a>
+
+<main>
+    <div class="intro">
+        <div class="eyebrow">Case — Identity &amp; Print</div>
+        <h1>Fàbro</h1>
+        <div class="subtitle">Traditional Italian pasta, Copenhagen</div>
+        <p>Fàbro is a small pasta counter on the corner of Fredericiagade and Borgergade — no reservations, plastic chairs on the sidewalk, wine poured a little too generously. The identity leans into that: a nostalgic script wordmark, a pair of cherubs holding cutlery instead of arrows, and a print system built to feel handled and a little worn before it even leaves the printer.</p>
+        <div class="meta">
+            <span>Client — Fàbro</span>
+            <span>Role — Identity, Print, Signage</span>
+            <span>Location — Copenhagen</span>
+        </div>
+    </div>
+
+    <figure>
+        <img src="Mockups/FABRO_LOGO_EX_CLEAN.png" alt="Fàbro logotype printed on cream stock, with two cherub illustrations and a handwritten Danish note">
+    </figure>
+
+    <section>
+        <h2>Signage</h2>
+        <p>The lightbox above the door borrows the yellow of a corner pizzeria awning — unmistakable at night against pale Copenhagen brick, a block before you can read what it says.</p>
+        <div class="stack">
+            <figure class="bleed">
+                <img src="Mockups/FABRO_OUTDOOR.png" alt="Fàbro storefront at dusk, guests seated on the sidewalk">
+            </figure>
+            <div class="pair">
+                <figure>
+                    <img src="Mockups/Sign_Fabro.png" alt="Illuminated lightbox sign concept on a concrete plinth">
+                </figure>
+                <figure>
+                    <img src="Mockups/Fabro_outdoor_Logo.png" alt="Fàbro entrance sign glowing yellow at night">
+                </figure>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Mark</h2>
+        <p>The crest is lifted from vintage ephemera and redrawn holding a fork instead of a bow — a small joke that turns into a wax-seal stamp across bags, matchboxes and stationery.</p>
+        <div class="stack">
+            <div class="pair">
+                <figure>
+                    <img src="Mockups/Ephemera_Fabro_Logo.png" alt="Fàbro wordmark and cherub crest on paper">
+                </figure>
+                <figure>
+                    <img src="Mockups/Ephemera_Fabro_Angels.png" alt="Cherub crest ephemera stamp, close up">
+                </figure>
+            </div>
+            <figure class="bleed">
+                <img src="Mockups/Paper_Pattern.png" alt="Repeating Fàbro wordmark wrapping paper pattern">
+            </figure>
+        </div>
+    </section>
+
+    <section>
+        <h2>Menu</h2>
+        <p>Screw-bound cards in blue, burgundy and gold — one per course — with the italic Fàbro running the length of the spine, and the actual menu set plainly enough to read by candlelight.</p>
+        <figure>
+            <img src="Mockups/Fabro_Menu.png" alt="Fàbro menu and wine list cards, screw-bound">
+        </figure>
+    </section>
+
+    <section>
+        <h2>Takeaway &amp; Table</h2>
+        <p>The small stuff carries the identity just as far as the sign does — a matchbox worth pocketing, a bag worth reusing.</p>
+        <div class="pair">
+            <figure>
+                <img src="Mockups/Fabro_Matches.png" alt="Fàbro branded matchbox, red and gold">
+            </figure>
+            <figure>
+                <img src="Mockups/BrownBag.png" alt="Fàbro takeaway paper bag with cherub sticker">
+            </figure>
+        </div>
+    </section>
+
+    <section class="stack">
+        <figure style="max-width: 480px; margin: 0 auto;">
+            <img src="Mockups/FABRO_INVITE_EX.png" alt="Thank you card with handwritten note and cherub illustration">
+        </figure>
+        <p style="max-width: 60ch; margin: 0 auto; text-align: center;">Grazie — from the corner of Fredericiagade and Borgergade.</p>
+    </section>
+
+    <footer>
+        <a href="../">← Studio Koben</a>
+    </footer>
+</main>
+
+</body>
+</html>
