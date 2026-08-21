@@ -60,9 +60,9 @@
     }
     .logo {
         position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
+        bottom: 20px;
+        left: 20px;
+        width: calc(100% - 40px);
         height: auto;
         pointer-events: none;
     }
@@ -73,7 +73,7 @@
 <img src="assets/KOBEN_LOGO_WHITE.svg" alt="KOBEN" class="logo">
 <div id="typewriter"></div>
 <script>
-    const before = `Studio KOBEN\nWhere dreams come true\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
+    const before = `Studio KOBEN\nA creative office\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
     const linkText = `Portfolio on request`;
     const element = document.getElementById('typewriter');
     let i = 0;
