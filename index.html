@@ -15,6 +15,10 @@
         padding: 0;
         box-sizing: border-box;
     }
+    html, body {
+        height: 100%;
+        overflow: hidden;
+    }
     body {
         background: var(--bg);
         color: var(--fg);
@@ -28,12 +32,84 @@
         min-height: 100vh;
         text-align: center;
     }
+    .bg-preview {
+        position: fixed;
+        inset: 10%;
+        z-index: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+    .bg-preview img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .top-center {
+        position: fixed;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.4;
+        white-space: pre-line;
+        z-index: 3;
+    }
+    .rail {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 64px;
+        height: 100%;
+        overflow: hidden;
+        z-index: 4;
+        cursor: pointer;
+    }
+    .rail-track {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: 50vh 0;
+        will-change: transform;
+    }
+    .rail-track img {
+        width: 26px;
+        height: 26px;
+        object-fit: cover;
+        opacity: 0.45;
+        cursor: pointer;
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        flex-shrink: 0;
+    }
+    .rail-track img.active {
+        opacity: 1;
+        transform: scale(1.3);
+    }
+    .rail-marker {
+        position: fixed;
+        top: 50%;
+        right: 0;
+        width: 64px;
+        height: 1px;
+        background: var(--fg);
+        opacity: 0.4;
+        pointer-events: none;
+        z-index: 4;
+    }
     #typewriter {
         white-space: pre-line;
         position: fixed;
         top: 20px;
         left: 20px;
         text-align: left;
+        z-index: 3;
     }
     .cursor {
         display: inline-block;
@@ -59,18 +135,19 @@
         color: var(--fg);
         text-decoration: none;
         cursor: pointer;
+        z-index: 3;
     }
     .about-link:hover {
         text-decoration: underline;
     }
-    .logo {
+    .logo, .logo-fade {
         position: fixed;
         bottom: 20px;
         left: 20px;
         width: calc(100% - 40px);
         aspect-ratio: 662.1 / 132.5;
         pointer-events: none;
-        background-color: var(--fg);
+        z-index: 3;
         -webkit-mask-image: url('assets/KOBEN_LOGO_WHITE.svg');
         mask-image: url('assets/KOBEN_LOGO_WHITE.svg');
         -webkit-mask-repeat: no-repeat;
@@ -80,12 +157,18 @@
         -webkit-mask-position: left bottom;
         mask-position: left bottom;
     }
+    .logo {
+        background-color: var(--fg);
+        clip-path: none;
+    }
+    .logo-fade {
+        background-color: var(--fg);
+        opacity: 0.8;
+        clip-path: inset(100% 100% 100% 100%);
+    }
 </style>
 </head>
 <body>
-<a href="info/" class="about-link">info</a>
-<div class="logo" aria-label="KOBEN"></div>
-<div id="typewriter"></div>
 <script>
     const colorBank = [
         '#040405', // Very Black
@@ -110,7 +193,229 @@
     }
     document.documentElement.style.setProperty('--bg', bg);
     document.documentElement.style.setProperty('--fg', fg);
+</script>
+<script src="assets/fabro-images.js"></script>
 
+<div class="bg-preview"><img id="bgImage" alt=""></div>
+
+<div class="top-center" id="topCenter"></div>
+
+<a href="info/" class="about-link">info</a>
+<div class="logo" aria-label="KOBEN"></div>
+<div class="logo-fade" aria-hidden="true"></div>
+<div id="typewriter"></div>
+
+<div class="rail">
+    <div class="rail-track" id="railTrack"></div>
+</div>
+<div class="rail-marker"></div>
+
+<script>
+    const rail = document.querySelector('.rail');
+    const railTrack = document.getElementById('railTrack');
+    const bgImage = document.getElementById('bgImage');
+
+    let scrollY = 0;
+    let maxScroll = 0;
+
+    const thumbs = FABRO_IMAGES.map((src, idx) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.loading = 'lazy';
+        img.alt = '';
+        img.addEventListener('click', () => {
+            stopAutoScroll();
+            resetIdleTimer();
+            const target = img.offsetTop + img.offsetHeight / 2 - rail.clientHeight / 2;
+            animateScrollTo(target);
+        });
+        railTrack.appendChild(img);
+        return img;
+    });
+
+    function computeMax() {
+        maxScroll = Math.max(0, railTrack.scrollHeight - rail.clientHeight);
+    }
+
+    let activeIndex = -1;
+    let firstImageShown = false;
+    function setActive(index) {
+        if (index === activeIndex) return;
+        if (thumbs[activeIndex]) thumbs[activeIndex].classList.remove('active');
+        thumbs[index].classList.add('active');
+        activeIndex = index;
+        bgImage.style.opacity = 0;
+        setTimeout(() => {
+            bgImage.src = FABRO_IMAGES[index];
+            bgImage.style.opacity = 1;
+            if (!firstImageShown) {
+                firstImageShown = true;
+                typeTopCenter();
+            }
+        }, 200);
+    }
+
+    function updateActive() {
+        const centerY = window.innerHeight / 2;
+        let closestIndex = 0;
+        let closestDist = Infinity;
+        thumbs.forEach((el, idx) => {
+            const rect = el.getBoundingClientRect();
+            const dist = Math.abs((rect.top + rect.height / 2) - centerY);
+            if (dist < closestDist) {
+                closestDist = dist;
+                closestIndex = idx;
+            }
+        });
+        setActive(closestIndex);
+    }
+
+    function render() {
+        railTrack.style.transform = `translateY(${-scrollY}px)`;
+        updateActive();
+    }
+
+    function setScrollY(value) {
+        scrollY = Math.max(0, Math.min(maxScroll, value));
+        render();
+    }
+
+    function animateScrollTo(target) {
+        target = Math.max(0, Math.min(maxScroll, target));
+        const start = scrollY;
+        const distance = target - start;
+        const duration = 500;
+        const startTime = performance.now();
+        function step(now) {
+            const t = Math.min(1, (now - startTime) / duration);
+            const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+            setScrollY(start + distance * eased);
+            if (t < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+    }
+
+    // Idle autoscroll: after a pause in user input, drift the rail like a carousel.
+    const IDLE_DELAY = 2500;
+    const AUTO_SPEED = 10; // px per second
+    let idleTimer = null;
+    let autoScrollActive = false;
+    let lastAutoTime = null;
+
+    function autoScrollStep(now) {
+        if (!autoScrollActive) return;
+        if (lastAutoTime === null) lastAutoTime = now;
+        const dt = (now - lastAutoTime) / 1000;
+        lastAutoTime = now;
+        let next = scrollY + AUTO_SPEED * dt;
+        if (next >= maxScroll) next = 0;
+        setScrollY(next);
+        requestAnimationFrame(autoScrollStep);
+    }
+
+    function startAutoScroll() {
+        autoScrollActive = true;
+        lastAutoTime = null;
+        requestAnimationFrame(autoScrollStep);
+    }
+
+    function stopAutoScroll() {
+        autoScrollActive = false;
+    }
+
+    function resetIdleTimer() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(startAutoScroll, IDLE_DELAY);
+    }
+
+    // Global input: scroll works anywhere on the page, not just over the rail.
+    window.addEventListener('wheel', (e) => {
+        stopAutoScroll();
+        resetIdleTimer();
+        setScrollY(scrollY + e.deltaY);
+    }, { passive: true });
+
+    let touchStartY = null;
+    window.addEventListener('touchstart', (e) => {
+        touchStartY = e.touches[0].clientY;
+        stopAutoScroll();
+        resetIdleTimer();
+    }, { passive: true });
+    window.addEventListener('touchmove', (e) => {
+        if (touchStartY === null) return;
+        const currentY = e.touches[0].clientY;
+        setScrollY(scrollY + (touchStartY - currentY));
+        touchStartY = currentY;
+        resetIdleTimer();
+    }, { passive: true });
+
+    window.addEventListener('resize', () => {
+        computeMax();
+        setScrollY(scrollY);
+        updateLogoClip();
+    });
+
+    // Fade the logo to 40% opacity only where it overlaps the background
+    // preview image: the normal logo gets a hole clipped out of it, and a
+    // second, translucent copy is clipped to just that hole so the image
+    // shows through. The image pixels themselves are never touched.
+    const logoNormal = document.querySelector('.logo');
+    const logoFade = document.querySelector('.logo-fade');
+
+    function updateLogoClip() {
+        const logoRect = logoNormal.getBoundingClientRect();
+        const imgRect = bgImage.getBoundingClientRect();
+
+        const ox1 = Math.max(logoRect.left, imgRect.left);
+        const oy1 = Math.max(logoRect.top, imgRect.top);
+        const ox2 = Math.min(logoRect.right, imgRect.right);
+        const oy2 = Math.min(logoRect.bottom, imgRect.bottom);
+
+        if (bgImage.style.opacity !== '1' || ox2 <= ox1 || oy2 <= oy1 || logoRect.width === 0 || logoRect.height === 0) {
+            logoNormal.style.clipPath = 'none';
+            logoFade.style.clipPath = 'inset(100% 100% 100% 100%)';
+            return;
+        }
+
+        const L = Math.max(0, Math.min(100, (ox1 - logoRect.left) / logoRect.width * 100));
+        const R = Math.max(0, Math.min(100, (ox2 - logoRect.left) / logoRect.width * 100));
+        const T = Math.max(0, Math.min(100, (oy1 - logoRect.top) / logoRect.height * 100));
+        const B = Math.max(0, Math.min(100, (oy2 - logoRect.top) / logoRect.height * 100));
+
+        logoNormal.style.clipPath = `polygon(evenodd, 0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, ${L}% ${T}%, ${L}% ${B}%, ${R}% ${B}%, ${R}% ${T}%, ${L}% ${T}%, 0% 0%)`;
+        logoFade.style.clipPath = `inset(${T}% ${100 - R}% ${100 - B}% ${L}%)`;
+    }
+
+    bgImage.addEventListener('load', updateLogoClip);
+
+    // Top-center caption types itself out once the first image appears.
+    const topCenter = document.getElementById('topCenter');
+    function typeTopCenter() {
+        const text = `Fàbro\nIdentity, print & signage for a Copenhagen pasta counter.`;
+        let i = 0;
+        function step() {
+            if (i <= text.length) {
+                topCenter.textContent = text.slice(0, i);
+                i++;
+                setTimeout(step, 20);
+            }
+        }
+        step();
+    }
+
+    computeMax();
+    updateLogoClip();
+
+    // Page opens on a plain color background; the rail starts scrolling
+    // (and images start appearing) only after a short pause.
+    const STARTUP_DELAY = 3000;
+    setTimeout(() => {
+        render();
+        startAutoScroll();
+    }, STARTUP_DELAY);
+</script>
+
+<script>
     const before = `Studio KOBEN\nA creative office\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
     const linkText = `Portfolio on request`;
     const element = document.getElementById('typewriter');
