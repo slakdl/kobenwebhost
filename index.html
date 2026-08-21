@@ -88,15 +88,28 @@
 <div id="typewriter"></div>
 <script>
     const colorBank = [
-        { bg: '#E3311C', fg: '#C2C1C0' },
-        { bg: '#2C4798', fg: '#C2C1C0' },
-        { bg: '#C2C1C0', fg: '#1C1A1B' },
-        { bg: '#EEE229', fg: '#949893' },
-        { bg: '#030405', fg: '#53241F' }
+        '#040405', // Very Black
+        '#1C1A1B', // Almost Black
+        '#53241F', // Moody Red
+        '#949893', // Mossy Grey
+        '#C3C2C1', // Boring Grey
+        '#F2F3DD', // Barely Yellow
+        '#E3DCA1', // Sleepy Yellow
+        '#E3311C', // Loud Red
+        '#2C4798', // Proper Blue
+        '#EEE229', // Happy Yellow
+        '#F0F0F1'  // Very White
     ];
-    const combo = colorBank[Math.floor(Math.random() * colorBank.length)];
-    document.documentElement.style.setProperty('--bg', combo.bg);
-    document.documentElement.style.setProperty('--fg', combo.fg);
+    function pickColor() {
+        return colorBank[Math.floor(Math.random() * colorBank.length)];
+    }
+    const bg = pickColor();
+    let fg = pickColor();
+    while (fg === bg) {
+        fg = pickColor();
+    }
+    document.documentElement.style.setProperty('--bg', bg);
+    document.documentElement.style.setProperty('--fg', fg);
 
     const before = `Studio KOBEN\nA creative office\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
     const linkText = `Portfolio on request`;
