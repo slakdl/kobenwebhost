@@ -12,8 +12,8 @@
         box-sizing: border-box;
     }
     body {
-        background: #f00;
-        color: #fff;
+        background: var(--bg);
+        color: var(--fg);
         font-family: Arial, Helvetica, sans-serif;
         font-size: 16px;
         line-height: 1.25;
@@ -40,7 +40,7 @@
         }
     }
     .portfolio-link {
-        color: #fff;
+        color: var(--fg);
         text-decoration: none;
         cursor: pointer;
     }
@@ -51,7 +51,7 @@
         position: fixed;
         top: 20px;
         right: 20px;
-        color: #fff;
+        color: var(--fg);
         text-decoration: none;
         cursor: pointer;
     }
@@ -63,16 +63,36 @@
         bottom: 20px;
         left: 20px;
         width: calc(100% - 40px);
-        height: auto;
+        aspect-ratio: 662.1 / 132.5;
         pointer-events: none;
+        background-color: var(--fg);
+        -webkit-mask-image: url('assets/KOBEN_LOGO_WHITE.svg');
+        mask-image: url('assets/KOBEN_LOGO_WHITE.svg');
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-position: left bottom;
+        mask-position: left bottom;
     }
 </style>
 </head>
 <body>
 <a href="info/" class="about-link">info</a>
-<img src="assets/KOBEN_LOGO_WHITE.svg" alt="KOBEN" class="logo">
+<div class="logo" aria-label="KOBEN"></div>
 <div id="typewriter"></div>
 <script>
+    const colorBank = [
+        { bg: '#E3311C', fg: '#C2C1C0' },
+        { bg: '#2C4798', fg: '#C2C1C0' },
+        { bg: '#C2C1C0', fg: '#1C1A1B' },
+        { bg: '#EEE229', fg: '#949893' },
+        { bg: '#030405', fg: '#53241F' }
+    ];
+    const combo = colorBank[Math.floor(Math.random() * colorBank.length)];
+    document.documentElement.style.setProperty('--bg', combo.bg);
+    document.documentElement.style.setProperty('--fg', combo.fg);
+
     const before = `Studio KOBEN\nA creative office\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
     const linkText = `Portfolio on request`;
     const element = document.getElementById('typewriter');
