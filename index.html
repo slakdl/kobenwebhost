@@ -110,6 +110,8 @@
     }
     document.documentElement.style.setProperty('--bg', bg);
     document.documentElement.style.setProperty('--fg', fg);
+    // Remember this visit's theme so the info page matches.
+    try { sessionStorage.setItem('koben-theme', JSON.stringify({ bg, fg })); } catch (e) {}
 
     const before = `Studio KOBEN\nA creative office\nSindshvilevej 9a\n2000 Frederiksberg\n\n`;
     const linkText = `Portfolio on request`;
